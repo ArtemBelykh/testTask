@@ -1,44 +1,31 @@
-import { Model, DataTypes } from 'sequelize';
+import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
 import { Book } from './book.model';
-import {sequelize} from "../config/sequelize";
-import {Table} from "sequelize-typescript";
 
 @Table({ tableName: 'orderItem' })
-export class OrderItem extends Model {
-    public id!: number;
-    public orderId!: number;
-    public bookId!: number;
-    public quantity!: number;
+export class OrderItem extends Model<OrderItem> {
+    @Column({
+        type: DataType.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    })
+    id: number;
 
-    public static initialize() {
-        this.init({
-            id: {
-                type: DataTypes.INTEGER,
-                autoIncrement: true,
-                primaryKey: true
-            },
-            orderId: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            bookId: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            quantity: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            }
-        }, {
-            sequelize,
-            modelName: 'OrderItem'
-        });
-    }
+    @ForeignKey(() => Book)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    bookId: number;
 
-    public static associate() {
-        this.belongsTo(Book);
-    }
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    orderId: number;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    quantity: number;
 }
-
-OrderItem.initialize();
-OrderItem.associate();

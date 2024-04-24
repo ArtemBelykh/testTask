@@ -1,29 +1,17 @@
-import { Model, DataTypes } from 'sequelize';
-import {sequelize} from "../config/sequelize";
-import {Table} from "sequelize-typescript";
-
+import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table({ tableName: 'author' })
-export class Author extends Model {
-    public id!: number;
-    public name!: string;
+export class Author extends Model<Author> {
+    @Column({
+        type: DataType.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    })
+    id: number;
 
-    public static initialize() {
-        this.init({
-            id: {
-                type: DataTypes.INTEGER,
-                autoIncrement: true,
-                primaryKey: true
-            },
-            name: {
-                type: DataTypes.STRING,
-                allowNull: false
-            }
-        }, {
-            sequelize,
-            modelName: 'Author'
-        });
-    }
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    name: string;
 }
-
-Author.initialize();

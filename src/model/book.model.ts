@@ -1,39 +1,25 @@
-import { Model, DataTypes } from 'sequelize';
+import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
 import { Author } from './author.model';
-import {sequelize} from "../config/sequelize";
-import {Table} from "sequelize-typescript";
 
 @Table({ tableName: 'book' })
-export class Book extends Model {
-    public id!: number;
-    public title!: string;
-    public authorId!: number;
+export class Book extends Model<Book> {
+    @Column({
+        type: DataType.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    })
+    id: number;
 
-    public static initialize() {
-        this.init({
-            id: {
-                type: DataTypes.INTEGER,
-                autoIncrement: true,
-                primaryKey: true
-            },
-            title: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            authorId: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            }
-        }, {
-            sequelize,
-            modelName: 'Book'
-        });
-    }
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    title: string;
 
-    public static associate() {
-        this.belongsTo(Author);
-    }
+    @ForeignKey(() => Author)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    authorId: number;
 }
-
-Book.initialize();
-Book.associate();

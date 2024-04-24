@@ -1,34 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
-import {sequelize} from "../config/sequelize";
-import {Table} from "sequelize-typescript";
+import { Model, Column, Table, ForeignKey } from 'sequelize-typescript';
+import {User} from "./user.model";
 
-
-@Table({ tableName: 'order' })
+@Table
 export class Order extends Model {
-    public id!: number;
-    public userId!: number;
-    public status!: string;
+    @Column
+    status: string;
 
-    public static initialize() {
-        this.init({
-            id: {
-                type: DataTypes.INTEGER,
-                autoIncrement: true,
-                primaryKey: true
-            },
-            userId: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            status: {
-                type: DataTypes.STRING,
-                allowNull: false
-            }
-        }, {
-            sequelize,
-            modelName: 'Order'
-        });
-    }
+    @ForeignKey(() => User)
+    @Column
+    userId: number;
 }
-
-Order.initialize();
